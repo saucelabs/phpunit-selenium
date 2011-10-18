@@ -48,9 +48,7 @@
 // If you change the default setting, please make sure to also configure
 // the same directory in phpunit_coverage.php. Also note that the webserver
 // needs write access to the directory.
-if (!isset($GLOBALS['PHPUNIT_COVERAGE_DATA_DIRECTORY'])) {
-    $GLOBALS['PHPUNIT_COVERAGE_DATA_DIRECTORY'] = FALSE;
-}
+$GLOBALS['PHPUNIT_COVERAGE_DATA_DIRECTORY'] = FALSE;
 
 if ( isset($_COOKIE['PHPUNIT_SELENIUM_TEST_ID']) &&
     !isset($_GET['PHPUNIT_SELENIUM_TEST_ID']) &&

@@ -42,19 +42,16 @@
  * @since      File available since Release 1.0.0
  */
 
-require_once 'File/Iterator/Autoload.php';
-require_once 'PHP/CodeCoverage/Autoload.php';
+require_once 'File/Iterator/Factory.php';
+require_once 'PHP/CodeCoverage/Filter.php';
 
 // Set this to the directory that contains the code coverage files.
 // It defaults to getcwd(). If you have configured a different directory
 // in prepend.php, you need to configure the same directory here.
-if (!isset($GLOBALS['PHPUNIT_COVERAGE_DATA_DIRECTORY'])) {
-    $GLOBALS['PHPUNIT_COVERAGE_DATA_DIRECTORY'] = getcwd();
-}
+$GLOBALS['PHPUNIT_COVERAGE_DATA_DIRECTORY'] = getcwd();
 
 if (isset($_GET['PHPUNIT_SELENIUM_TEST_ID'])) {
-    $facade = new File_Iterator_Facade;
-    $files  = $facade->getFilesAsArray(
+    $files = File_Iterator_Factory::getFileIterator(
       $GLOBALS['PHPUNIT_COVERAGE_DATA_DIRECTORY'],
       $_GET['PHPUNIT_SELENIUM_TEST_ID']
     );
@@ -62,21 +59,22 @@ if (isset($_GET['PHPUNIT_SELENIUM_TEST_ID'])) {
     $coverage = array();
 
     foreach ($files as $file) {
-        $data = unserialize(file_get_contents($file));
-        @unlink($file);
-        unset($file);
+        $filename = $file->getPathName();
+        $data     = unserialize(file_get_contents($filename));
+        @unlink($filename);
+        unset($filename);
 
-        foreach ($data as $file => $lines) {
-            if (PHP_CodeCoverage_Filter::isFile($file)) {
-                if (!isset($coverage[$file])) {
-                    $coverage[$file] = array(
-                      'md5' => md5_file($file), 'coverage' => $lines
+        foreach ($data as $filename => $lines) {
+            if (PHP_CodeCoverage_Filter::isFile($filename)) {
+                if (!isset($coverage[$filename])) {
+                    $coverage[$filename] = array(
+                      'md5' => md5_file($filename), 'coverage' => $lines
                     );
                 } else {
                     foreach ($lines as $line => $flag) {
-                        if (!isset($coverage[$file]['coverage'][$line]) ||
-                            $flag > $coverage[$file]['coverage'][$line]) {
-                            $coverage[$file]['coverage'][$line] = $flag;
+                        if (!isset($coverage[$filename]['coverage'][$line]) ||
+                            $flag > $coverage[$filename]['coverage'][$line]) {
+                            $coverage[$filename]['coverage'][$line] = $flag;
                         }
                     }
                 }
