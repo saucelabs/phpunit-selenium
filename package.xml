@@ -9,18 +9,18 @@
                       http://pear.php.net/dtd/package-2.0.xsd">
  <name>PHPUnit_Selenium</name>
  <channel>saucelabs.github.com/pear</channel>
- <summary>Temporary Sauce Labs fork of Selenium RC integration for PHPUnit</summary>
- <description>Temporary Sauce Labs fork of Selenium RC integration for PHPUnit</description>
+ <summary>Saucelabs temporary mirror of Selenium RC integration for PHPUnit</summary>
+ <description>Saucelabs temporary mirror of Selenium RC integration for PHPUnit to support parallelism, until parallelism gets merged into main</description>
  <lead>
   <name>Sebastian Bergmann</name>
   <user>sb</user>
   <email>sb@sebastian-bergmann.de</email>
   <active>yes</active>
  </lead>
- <date>2011-10-17</date>
+ <date>2011-10-18</date>
  <version>
-  <release>1.1.4</release>
-  <api>1.0.0</api>
+  <release>1.1.5</release>
+  <api>1.1.0</api>
  </version>
  <stability>
   <release>stable</release>
@@ -63,6 +63,14 @@
    <pearinstaller>
     <min>1.9.2</min>
    </pearinstaller>
+   <package>
+    <name>PHPUnit</name>
+    <channel>saucelabs.github.com/pear</channel>
+    <min>3.5.21</min>
+   </package>
+   <extension>
+    <name>curl</name>
+   </extension>
    <extension>
     <name>dom</name>
    </extension>
